@@ -121,12 +121,61 @@ public class Menu {
 		vehicleDao.createNewVehicle(vehicleType, vehicleYear, vehicleMake, vehicleModel);
 	}
 	
-	private void updateVehicle() {
+	private void updateVehicle() throws SQLException {
+		int id;
+		String vehicleType;
+		int vehicleYear;
+		String vehicleMake;
+		String vehicleModel;
+		Boolean exit = false;
+		Set<String> acceptedVehicleTypes = new HashSet<String>();
+			acceptedVehicleTypes.add("Car");
+			acceptedVehicleTypes.add("Boat");
+			acceptedVehicleTypes.add("Plane");
 		
+		Boolean idCheck = false;	
+		Boolean typeCheck = false;
+		Boolean yearCheck = false;
+		//Boolean makeCheck = false;
+		//Boolean modelCheck = false;
+	
+		String initialMessage = "Enter Vehicle Id of Vehicle to update: ";
+		String typeOfType = "Update";
+	
+		do {
+			vehicleType = typeEntry(initialMessage, typeOfType);
+			
+			if (acceptedVehicleTypes.contains(vehicleType)) {
+				typeCheck = true;
+			}
+			
+			vehicleYear = yearEntry();
+			
+			if (vehicleYear > 0) {
+				yearCheck = true;
+			}
+			
+			System.out.print("Enter Vehicle Make: ");
+			vehicleMake = scanner.nextLine();
+			
+			System.out.print("Enter Vehicle Model: ");
+			vehicleModel = scanner.nextLine();
+			
+			
+			
+			if (typeCheck && yearCheck) {
+				exit = true;
+			}
+			
+		} while (!exit);
+		
+		vehicleDao.updateVehicleById(id, vehicleType, vehicleYear, vehicleMake, vehicleModel);
 	}
 	
-	private void deleteVehicle() {
-		
+	private void deleteVehicle() throws SQLException {
+		System.out.println("Enter Vehicle Id to delete: ");
+		int id = Integer.parseInt(scanner.nextLine());
+		vehicleDao.deleteVehicleById(id);
 	}
 	
 	private int yearEntry() {
@@ -138,8 +187,7 @@ public class Menu {
 			try {
 				
 				System.out.print("Enter Vehicle Year (4 digits ex: 1994): ");
-				vehicleYearEntry = scanner.nextInt();
-				scanner.nextLine();
+				vehicleYearEntry = Integer.parseInt(scanner.nextLine());
 				
 				
 				do {
@@ -147,16 +195,14 @@ public class Menu {
 						System.out.println("\n!!!---ERROR---!!!!\nOnly 4 digit years are valid entrys. (ex: 1994)\n");
 						
 						System.out.print("Enter Vehicle Year (4 digits ex: 1994): ");
-						vehicleYearEntry = scanner.nextInt();
-						scanner.nextLine();
+						vehicleYearEntry = Integer.parseInt(scanner.nextLine());
 					
 					//Stupid limitation of the Year field in MYSQL	
 					} else if (vehicleYearEntry <= 1901 || vehicleYearEntry >= 2155) {
 						System.out.println("\n!!!---ERROR---!!!!\nEntry outside of limits. Please keep between 1901-2155.\n");
 						
 						System.out.print("Enter Vehicle Year (4 digits ex: 1994): ");
-						vehicleYearEntry = scanner.nextInt();
-						scanner.nextLine();
+						vehicleYearEntry = Integer.parseInt(scanner.nextLine());
 						
 					} else yearCheck = true;
 					
@@ -172,6 +218,32 @@ public class Menu {
 
 		
 		return vehicleYearEntry;
+	}
+	
+	private String typeEntry(String passedString, String typeOfEntry) {
+		String vehicleTypeEntry;
+		Boolean typeCheck = false;
+		Set<String> acceptedVehicleTypes = new HashSet<String>();
+			acceptedVehicleTypes.add("Car");
+			acceptedVehicleTypes.add("Boat");
+			acceptedVehicleTypes.add("Plane");
+		
+		System.out.print(passedString);
+		vehicleTypeEntry = scanner.nextLine();
+		
+		do {
+			if (!acceptedVehicleTypes.contains(vehicleTypeEntry) && typeOfEntry.equals("vehicleType")) {
+			System.out.println("\n!!!---ERROR---!!!!\nOnly 'Car', 'Boat', or 'Plane' are valid entrys for Vehicle Type. (Case-Sensitive)\n");
+			
+			System.out.print(passedString);
+			vehicleTypeEntry = scanner.nextLine();
+			
+			} if else (typeOfEntry.equals("Update")) {
+				
+			} else typeCheck = true;
+		} while (!typeCheck);
+		
+		return vehicleTypeEntry;
 	}
 	
 }
