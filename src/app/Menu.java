@@ -170,9 +170,24 @@ public class Menu {
 	}
 	
 	private void deleteVehicle() throws SQLException {
-		System.out.println("Enter Vehicle Id to delete: ");
-		int id = Integer.parseInt(scanner.nextLine());
-		vehicleDao.deleteVehicleById(id);
+		
+		String deleteCheckEntry;
+		Boolean deleteCheck = false;
+		
+		int id = idEntry("Enter Vehicle Id to DELETE entry: ");
+
+		if (id > 0) {
+			System.out.println("Are you sure you want to DELETE the vehichle entry with the ID: " + id + " ?");
+			System.out.println("Type 'yes' to confirm or 'no' to cancel. (No is defalut)");
+			deleteCheckEntry = scanner.nextLine();
+			
+			if(deleteCheckEntry.equalsIgnoreCase("no") || deleteCheckEntry.equalsIgnoreCase("n") || deleteCheckEntry.equalsIgnoreCase("")) {
+			} else if(deleteCheckEntry.equalsIgnoreCase("yes") || deleteCheckEntry.equalsIgnoreCase("y")) {
+				vehicleDao.deleteVehicleById(id);
+			} else System.out.println("Use: Yes, No ,Y , or N");
+		}
+		
+
 	}
 
 	private int idEntry(String passedString) {

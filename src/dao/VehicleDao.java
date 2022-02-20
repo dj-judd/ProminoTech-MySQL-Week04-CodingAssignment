@@ -51,6 +51,7 @@ public class VehicleDao {
 	public void deleteVehicleById(int id) throws SQLException {
 		PreparedStatement ps = connection.prepareStatement(DELETE_VEHICLE_BY_ID);
 		ps.setInt(1, id);
+		ps.executeUpdate();
 		
 	}
 
