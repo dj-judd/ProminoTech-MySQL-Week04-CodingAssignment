@@ -139,21 +139,18 @@ public class Menu {
 		//Boolean makeCheck = false;
 		//Boolean modelCheck = false;
 	
-		String initialMessage = "Enter Vehicle Id of Vehicle to update: ";
-		String typeOfType = "Update";
-	
 		do {
-			vehicleType = typeEntry(initialMessage, typeOfType);
 			
-			if (acceptedVehicleTypes.contains(vehicleType)) {
-				typeCheck = true;
-			}
+			id = idEntry("Enter Vehicle Id of Vehicle to update: ");
+			idCheck = intEntryCheck(id);
+			
+			vehicleType = typeEntry("Enter Vehicle Type (Car, Boat, or Plane): ");
+			typeCheck = boolEntryCheck(acceptedVehicleTypes.contains(vehicleType));
+			
 			
 			vehicleYear = yearEntry();
-			
-			if (vehicleYear > 0) {
-				yearCheck = true;
-			}
+			yearCheck = intEntryCheck(vehicleYear);
+
 			
 			System.out.print("Enter Vehicle Make: ");
 			vehicleMake = scanner.nextLine();
@@ -163,7 +160,7 @@ public class Menu {
 			
 			
 			
-			if (typeCheck && yearCheck) {
+			if (idCheck && typeCheck && yearCheck) {
 				exit = true;
 			}
 			
@@ -176,6 +173,59 @@ public class Menu {
 		System.out.println("Enter Vehicle Id to delete: ");
 		int id = Integer.parseInt(scanner.nextLine());
 		vehicleDao.deleteVehicleById(id);
+	}
+
+	private int idEntry(String passedString) {
+		Boolean idCheck = false;
+		int idEntry = 0;
+		
+		while (!idCheck) {
+			//scanner.nextInt()'s mom is a ho. All of this code to catch it's exception gracefully.
+			try {
+				
+				System.out.print(passedString);
+				idEntry = Integer.parseInt(scanner.nextLine());
+				
+				
+				if (idEntry > 0) {
+					idCheck = true;
+				} else {
+					System.out.println("Only positive values above 0 please. Try again.");
+				}
+				
+			} catch (InputMismatchException e) {
+				System.out.println("Ooo, you did something naughty there. Try to stick to a normal integer. ex:1,2,...,123\n");
+				scanner.nextLine();
+				
+				continue;
+			}
+		}
+		
+		return idEntry;
+	}
+	
+	private String typeEntry(String passedString) {
+		String vehicleTypeEntry;
+		Boolean typeCheck = false;
+		Set<String> acceptedVehicleTypes = new HashSet<String>();
+			acceptedVehicleTypes.add("Car");
+			acceptedVehicleTypes.add("Boat");
+			acceptedVehicleTypes.add("Plane");
+		
+		System.out.print(passedString);
+		vehicleTypeEntry = scanner.nextLine();
+		
+		do {
+			if (!acceptedVehicleTypes.contains(vehicleTypeEntry)) {
+			System.out.println("\n!!!---ERROR---!!!!\nOnly 'Car', 'Boat', or 'Plane' are valid entrys for Vehicle Type. (Case-Sensitive)\n");
+			
+			System.out.print(passedString);
+			vehicleTypeEntry = scanner.nextLine();
+			
+			} else typeCheck = true;
+		} while (!typeCheck);
+		
+		return vehicleTypeEntry;
 	}
 	
 	private int yearEntry() {
@@ -220,30 +270,21 @@ public class Menu {
 		return vehicleYearEntry;
 	}
 	
-	private String typeEntry(String passedString, String typeOfEntry) {
-		String vehicleTypeEntry;
-		Boolean typeCheck = false;
-		Set<String> acceptedVehicleTypes = new HashSet<String>();
-			acceptedVehicleTypes.add("Car");
-			acceptedVehicleTypes.add("Boat");
-			acceptedVehicleTypes.add("Plane");
+	private Boolean intEntryCheck(int incomingInt) {
+		Boolean check = false;
 		
-		System.out.print(passedString);
-		vehicleTypeEntry = scanner.nextLine();
+		if (incomingInt > 0) {
+			return check = true;
+		} else return check = false;
 		
-		do {
-			if (!acceptedVehicleTypes.contains(vehicleTypeEntry) && typeOfEntry.equals("vehicleType")) {
-			System.out.println("\n!!!---ERROR---!!!!\nOnly 'Car', 'Boat', or 'Plane' are valid entrys for Vehicle Type. (Case-Sensitive)\n");
-			
-			System.out.print(passedString);
-			vehicleTypeEntry = scanner.nextLine();
-			
-			} if else (typeOfEntry.equals("Update")) {
-				
-			} else typeCheck = true;
-		} while (!typeCheck);
+	}
+	
+	private Boolean boolEntryCheck(Boolean incomingBool) {
+		Boolean check = false;
 		
-		return vehicleTypeEntry;
+		if (incomingBool = true) {
+			return check = true;
+		} else return check = false;
 	}
 	
 }
