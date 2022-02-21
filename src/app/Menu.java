@@ -109,8 +109,7 @@ public class Menu {
 			vehicleYear = yearEntry();
 			
 			if (vehicleYear > 0) {
-				yearCheck = true;
-			}
+				yearCheck = true;}
 			
 			System.out.print("Enter Vehicle Make: ");
 			vehicleMake = scanner.nextLine();
@@ -118,16 +117,9 @@ public class Menu {
 			System.out.print("Enter Vehicle Model: ");
 			vehicleModel = scanner.nextLine();
 			
-			
-			
 			if (typeCheck && yearCheck) {
-				exit = true;
-			}
-			
-		} while (!exit);
-		
-
-		
+				exit = true;}
+		} while (!exit);	
 		vehicleDao.createNewVehicle(vehicleType, vehicleYear, vehicleMake, vehicleModel);
 	}
 	
