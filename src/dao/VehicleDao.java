@@ -12,7 +12,7 @@ import entity.Vehicle;
 public class VehicleDao {
 	
 	private Connection connection;
-	private final String GET_VEHICLES_QUERY = "SELECT * FROM vehicles";
+	private final String GET_VEHICLES_QUERY = "SELECT * FROM vehicle_table";
 	private final String CREATE_NEW_VEHICLE = "INSERT INTO vehicle_table(type, year, make, model) VALUES (?, ?, ?, ?)";
 	private final String UPDATE_VEHICLE_BY_ID = "UPDATE vehicle_table SET type = ?, year = ?, make = ?, model = ? WHERE id = ?";
 	private final String DELETE_VEHICLE_BY_ID = "DELETE FROM vehicle_table WHERE id = ?";
@@ -26,7 +26,16 @@ public class VehicleDao {
 	public List<Vehicle> getVehicles() throws SQLException {
 		ResultSet rs = connection.prepareStatement(GET_VEHICLES_QUERY).executeQuery();
 		List<Vehicle> vehicles = new ArrayList<Vehicle>();
+		
+		while (rs.next()) {
+			vehicles.add(populateVehicle(rs.getInt(1), rs.getString(2), rs.getInt(3), rs.getString(4), rs.getString(5)));
+		}
+		
 		return vehicles;
+	}
+	
+	private Vehicle populateVehicle(int id, String vehicleType, int year, String make, String model) {
+		return new Vehicle(id, vehicleType, year, make, model);
 	}
 	
 	public void createNewVehicle(String type, int year, String make, String model) throws SQLException {

@@ -1,6 +1,7 @@
 package app;
 
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashSet;
 import java.util.InputMismatchException;
@@ -56,12 +57,21 @@ public class Menu {
 		}
 	}
 	
-	private void displayVehicles() {
-		System.out.println("\t" + Vehicle.getVehicleId() + 
-						  " : " + Vehicle.getVehicleType() + 
-						  " : " + Vehicle.getYear() + 
-						  " : " + Vehicle.getMake() + 
-						  " : " + Vehicle.getModel());
+	private void displayVehicles() throws SQLException {
+
+
+		List<Vehicle> vehicles = vehicleDao.getVehicles();
+		
+		for (Vehicle vehicle : vehicles) {
+					System.out.println("\t" + vehicle.getVehicleId() + 
+							  " : " + vehicle.getVehicleType() + 
+							  " : " + vehicle.getYear() + 
+							  " : " + vehicle.getMake() + 
+							  " : " + vehicle.getModel());
+		}
+
+
+	
 	}
 	
 	private void enterNewVehicle() throws SQLException {
